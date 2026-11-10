@@ -1,0 +1,175 @@
+table F_DisruptionEvent
+	lineageTag: 84183327-63b8-4cba-80e0-924ecc2d8352
+
+	column event_name
+		dataType: string
+		lineageTag: 590c9773-ba2e-4109-bfa5-15221951b0e9
+		summarizeBy: none
+		sourceColumn: event_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 6aff4251-5bc5-4250-8590-043aa7ff2b54
+		summarizeBy: sum
+		sourceColumn: duration_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column bdi_shock_pct
+		dataType: int64
+		formatString: 0
+		lineageTag: 2baecd00-4bfd-4f6e-acdb-f0c5fd2a573b
+		summarizeBy: sum
+		sourceColumn: bdi_shock_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column freight_rate_shock_pct
+		dataType: double
+		lineageTag: 876b82a3-76e6-4e7c-b0f4-56874b0cf971
+		summarizeBy: sum
+		sourceColumn: freight_rate_shock_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gdp_impact_pct
+		dataType: double
+		lineageTag: 7da13563-2842-4fe7-9199-0e8dece5b3a1
+		summarizeBy: sum
+		sourceColumn: gdp_impact_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column trade_volume_impact_pct
+		dataType: double
+		lineageTag: d92ce279-2230-4038-b895-68a2035e151c
+		summarizeBy: sum
+		sourceColumn: trade_volume_impact_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column recovery_months
+		dataType: double
+		lineageTag: 98eba298-42a8-4d6c-ab60-534fd7ae8c93
+		summarizeBy: sum
+		sourceColumn: recovery_months
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_pandemic
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 95761658-c4a9-4356-bae0-0261f1bc7df9
+		summarizeBy: none
+		sourceColumn: is_pandemic
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_geopolitical
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f95c12e6-438f-4cf3-808c-baed329e2608
+		summarizeBy: none
+		sourceColumn: is_geopolitical
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_natural
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 8410ccc0-9734-4141-80b8-4756828343a3
+		summarizeBy: none
+		sourceColumn: is_natural
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_financial
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1bd78a9e-9035-47ce-aa7e-ed6d4fa559a1
+		summarizeBy: none
+		sourceColumn: is_financial
+
+		annotation SummarizationSetBy = Automatic
+
+	column straits_affected
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6c35d2c9-805e-4a44-a473-4a94161bec61
+		summarizeBy: none
+		sourceColumn: straits_affected
+
+		annotation SummarizationSetBy = Automatic
+
+	column port_closure
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 124cf926-2a0a-4333-9d1d-ec66e0ba77c6
+		summarizeBy: none
+		sourceColumn: port_closure
+
+		annotation SummarizationSetBy = Automatic
+
+	column k_date
+		dataType: string
+		lineageTag: 74c02fa7-8556-4ae3-a69c-88a03d5721cd
+		summarizeBy: none
+		sourceColumn: k_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column k_severity
+		dataType: int64
+		formatString: 0
+		lineageTag: 66d59871-8e14-4ea2-8c82-b48e5ed6bf69
+		summarizeBy: none
+		sourceColumn: k_severity
+
+		annotation SummarizationSetBy = Automatic
+
+	column k_disruption_type
+		dataType: int64
+		formatString: 0
+		lineageTag: 73eddde0-4284-49c5-8aa8-3657dc21b5d7
+		summarizeBy: none
+		sourceColumn: k_disruption_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column k_region
+		dataType: int64
+		formatString: 0
+		lineageTag: ec014d13-2387-4ff9-889a-7fbc16753df9
+		summarizeBy: none
+		sourceColumn: k_region
+
+		annotation SummarizationSetBy = Automatic
+
+	partition F_DisruptionEvent = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Source = F_DisruptionEvent_temp,
+				    #"Merged Queries" = Table.NestedJoin(Source, {"region_affected"}, D_Region, {"region_affected"}, "D_Region", JoinKind.LeftOuter),
+				    #"Expanded D_Region" = Table.ExpandTableColumn(#"Merged Queries", "D_Region", {"k_region"}, {"D_Region.k_region"}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Expanded D_Region",{"region_affected"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"D_Region.k_region", "k_region"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

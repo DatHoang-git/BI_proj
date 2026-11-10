@@ -1,0 +1,49 @@
+table D_Severity
+	lineageTag: 0f21fbda-18eb-4013-a7f4-b67754e29846
+
+	column severity
+		dataType: string
+		lineageTag: 74dd3f57-54e1-43a4-b63e-5d79af653978
+		summarizeBy: none
+		sourceColumn: severity
+
+		annotation SummarizationSetBy = Automatic
+
+	column k_severity
+		dataType: int64
+		formatString: 0
+		lineageTag: 097c6fe6-81ef-4f59-a76e-4684a06e427d
+		summarizeBy: none
+		sourceColumn: k_severity
+
+		annotation SummarizationSetBy = Automatic
+
+	column severity_rank
+		dataType: int64
+		formatString: 0
+		lineageTag: b2353a64-0c25-4f16-b8b4-e08465cac2d9
+		summarizeBy: none
+		sourceColumn: severity_rank
+
+		annotation SummarizationSetBy = Automatic
+
+	partition D_Severity = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = disruption_events,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"severity"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Added Index" = Table.AddIndexColumn(#"Removed Duplicates", "Index", 1, 1, Int64.Type),
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Added Index", {"Index"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Errors",{{"Index", "k_severity"}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Renamed Columns", "severity_rank", each if [severity] = "high" then 2 else if [severity] = "medium" then 1 else if [severity] = "extreme" then 3 else null, type number),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Conditional Column",{{"severity_rank", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

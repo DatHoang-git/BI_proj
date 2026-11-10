@@ -1,0 +1,37 @@
+table D_Region
+	lineageTag: ef519d31-0fbc-4228-822d-acfb88912c4e
+
+	column region_affected
+		dataType: string
+		lineageTag: ebf5e0df-bde6-4f22-b792-144b40d5e744
+		summarizeBy: none
+		sourceColumn: region_affected
+
+		annotation SummarizationSetBy = Automatic
+
+	column k_region
+		dataType: int64
+		formatString: 0
+		lineageTag: 0a2ca7ce-d873-4831-ac5c-6f16cdf7cd32
+		summarizeBy: none
+		sourceColumn: k_region
+
+		annotation SummarizationSetBy = Automatic
+
+	partition D_Region = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = F_DisruptionEvent_temp,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"region_affected"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Added Index" = Table.AddIndexColumn(#"Removed Duplicates", "Index", 1, 1, Int64.Type),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Index",{{"Index", "k_region"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

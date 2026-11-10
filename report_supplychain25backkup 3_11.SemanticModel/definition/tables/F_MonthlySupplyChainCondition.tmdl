@@ -1,0 +1,121 @@
+table F_MonthlySupplyChainCondition
+	lineageTag: 9990bf8f-56ea-4fc5-9562-47e41340c10b
+
+	column k_date
+		dataType: int64
+		formatString: 0
+		lineageTag: 56e2fc20-5de6-4546-823b-1deb2991248d
+		summarizeBy: none
+		sourceColumn: k_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column baltic_dry_index
+		dataType: double
+		lineageTag: 54742f8f-87fd-456b-9b59-ac9e3adb6e63
+		summarizeBy: sum
+		sourceColumn: baltic_dry_index
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column container_rate_usd_40ft
+		dataType: double
+		lineageTag: 8a1d6241-fa6a-4c64-aaa2-3df73c7ba1ee
+		summarizeBy: sum
+		sourceColumn: container_rate_usd_40ft
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column air_cargo_rate_usd_kg
+		dataType: double
+		lineageTag: ee25b1e6-2a38-484a-a87f-3817df7ff7e5
+		summarizeBy: sum
+		sourceColumn: air_cargo_rate_usd_kg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column bdi_mom_change_pct
+		dataType: double
+		lineageTag: 10a36e2f-0975-4a44-ad79-96f95313a374
+		summarizeBy: sum
+		sourceColumn: bdi_mom_change_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column container_yoy_pct
+		dataType: double
+		lineageTag: ce0b24ad-d0f5-47e9-9c6b-d7615d8afc74
+		summarizeBy: sum
+		sourceColumn: container_yoy_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tanker_rate_aframax_usd_day
+		dataType: double
+		lineageTag: 5323cd9b-79bf-49a2-a9ba-81ef800029ac
+		summarizeBy: sum
+		sourceColumn: tanker_rate_aframax_usd_day
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column bulk_carrier_handysize_usd_day
+		dataType: double
+		lineageTag: a5f5412f-6d41-41ca-b3f2-0bc29400d197
+		summarizeBy: sum
+		sourceColumn: bulk_carrier_handysize_usd_day
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column supply_chain_pressure_index
+		dataType: double
+		lineageTag: 8374f101-f496-4508-b9bc-c594521345af
+		summarizeBy: sum
+		sourceColumn: supply_chain_pressure_index
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column on_time_delivery_pct
+		dataType: double
+		lineageTag: 81edfa1b-3956-4e72-a07c-690870b2b39d
+		summarizeBy: sum
+		sourceColumn: on_time_delivery_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition F_MonthlySupplyChainCondition = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Source = shipping_rates,
+				    #"Added Custom" = Table.AddColumn(Source, "k_date", each Date.Year([date]) * 10000
+				    + Date.Month([date]) * 100
+				    + Date.Day([date])),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"k_date", Int64.Type}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"year", "month", "date"}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Removed Columns",{"k_date", "baltic_dry_index", "container_rate_usd_40ft", "air_cargo_rate_usd_kg", "bdi_mom_change_pct", "container_yoy_pct", "tanker_rate_aframax_usd_day", "bulk_carrier_handysize_usd_day", "supply_chain_pressure_index", "on_time_delivery_pct"})
+				in
+				    #"Reordered Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,132 @@
+table F_BilateralTradeFlow
+	lineageTag: 67c0bb3f-6846-46cf-8778-23e75279a04c
+
+	column trade_category
+		dataType: string
+		lineageTag: 5e23a3f3-95be-4b8b-8ded-5c53db15b672
+		summarizeBy: none
+		sourceColumn: trade_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column key_goods
+		dataType: string
+		lineageTag: 6d108fd4-c0fb-4b2c-b440-14263467ecb5
+		summarizeBy: none
+		sourceColumn: key_goods
+
+		annotation SummarizationSetBy = Automatic
+
+	column trade_value_bn_usd
+		dataType: double
+		lineageTag: 1fc37553-5a39-4336-b4bb-1a84db7a6b7b
+		summarizeBy: sum
+		sourceColumn: trade_value_bn_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column yoy_growth_pct
+		dataType: double
+		lineageTag: e0a4bf91-9922-4c57-aee6-c2fb8badd50a
+		summarizeBy: sum
+		sourceColumn: yoy_growth_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column effective_tariff_rate_pct
+		dataType: double
+		lineageTag: 2e833125-d366-4209-b85e-60c4ee0261f7
+		summarizeBy: sum
+		sourceColumn: effective_tariff_rate_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column trade_active
+		dataType: double
+		lineageTag: eb29746a-59f2-4052-8c36-2be01686b916
+		summarizeBy: sum
+		sourceColumn: trade_active
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column supply_chain_integrated
+		dataType: double
+		lineageTag: f6069747-79b2-47d2-a986-b674db191f56
+		summarizeBy: sum
+		sourceColumn: supply_chain_integrated
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column concentration_risk
+		dataType: double
+		lineageTag: 522f3bd0-8736-4fa3-8bdc-817f530a4dc7
+		summarizeBy: sum
+		sourceColumn: concentration_risk
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column k_date
+		dataType: double
+		lineageTag: b3f6e36b-fd6f-46f9-a0ba-6f6ed06c43b2
+		summarizeBy: none
+		sourceColumn: k_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column k_exporter
+		dataType: int64
+		formatString: 0
+		lineageTag: 8d5af658-6cf1-4284-9038-88b05c5cef23
+		summarizeBy: none
+		sourceColumn: k_exporter
+
+		annotation SummarizationSetBy = Automatic
+
+	column k_importer
+		dataType: int64
+		formatString: 0
+		lineageTag: bbc6dec4-b79f-4f36-814c-fde601b3212a
+		summarizeBy: sum
+		sourceColumn: k_importer
+
+		annotation SummarizationSetBy = Automatic
+
+	partition F_BilateralTradeFlow = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Source = trade_flows,
+				    #"Inserted Multiplication" = Table.AddColumn(Source, "Multiplication", each [year] * 10000, type number),
+				    #"Inserted Addition" = Table.AddColumn(#"Inserted Multiplication", "Addition", each [Multiplication] + 101, type number),
+				    #"Removed Columns" = Table.RemoveColumns(#"Inserted Addition",{"Multiplication"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"Addition", "k_date"}}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Renamed Columns",{"year"}),
+				    #"Merged Queries" = Table.NestedJoin(#"Removed Columns1", {"exporter"}, D_TradingEntity, {"trading_entity"}, "D_TradingEntity", JoinKind.LeftOuter),
+				    #"Expanded D_TradingEntity" = Table.ExpandTableColumn(#"Merged Queries", "D_TradingEntity", {"k_trading_entity"}, {"D_TradingEntity.k_trading_entity"}),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Expanded D_TradingEntity",{{"D_TradingEntity.k_trading_entity", "k_exporter"}}),
+				    #"Merged Queries1" = Table.NestedJoin(#"Renamed Columns1", {"importer"}, D_TradingEntity, {"trading_entity"}, "D_TradingEntity", JoinKind.LeftOuter),
+				    #"Expanded D_TradingEntity1" = Table.ExpandTableColumn(#"Merged Queries1", "D_TradingEntity", {"k_trading_entity"}, {"D_TradingEntity.k_trading_entity"}),
+				    #"Renamed Columns2" = Table.RenameColumns(#"Expanded D_TradingEntity1",{{"D_TradingEntity.k_trading_entity", "k_importer"}}),
+				    #"Removed Columns2" = Table.RemoveColumns(#"Renamed Columns2",{"exporter", "importer"})
+				in
+				    #"Removed Columns2"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

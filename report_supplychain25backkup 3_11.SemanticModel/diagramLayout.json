@@ -1,0 +1,152 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 1513.1710242960889,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 2687.2620615939095,
+            "y": 447.71638400682173
+          },
+          "nodeIndex": "D_Date",
+          "nodeLineageTag": "1b4e06d9-a547-4213-992d-8d1ea85997bd",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3096.5999976815451,
+            "y": 144.51778918559947
+          },
+          "nodeIndex": "D_DisruptionType",
+          "nodeLineageTag": "e04a2f64-b6c2-4458-8431-5fb16c097a2e",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1990.5851994636316,
+            "y": 829.37756696166775
+          },
+          "nodeIndex": "D_Industry",
+          "nodeLineageTag": "704aa2d5-b445-4ece-af33-cbd652b62c38",
+          "size": {
+            "height": 145,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3323.8345757412781,
+            "y": 1006.8055075146802
+          },
+          "nodeIndex": "D_TradingEntity",
+          "nodeLineageTag": "c9d2cd3d-72e9-4641-bd64-46f749d2cc71",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2314.7854095783177,
+            "y": 376.29195031278385
+          },
+          "nodeIndex": "F_MonthlySupplyChainCondition",
+          "nodeLineageTag": "9990bf8f-56ea-4fc5-9562-47e41340c10b",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3356.7353776608788,
+            "y": 733.53723363376423
+          },
+          "nodeIndex": "D_Region",
+          "nodeLineageTag": "ef519d31-0fbc-4228-822d-acfb88912c4e",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2594.7555698578908,
+            "y": 153.03108120270116
+          },
+          "nodeIndex": "D_Severity",
+          "nodeLineageTag": "0f21fbda-18eb-4013-a7f4-b67754e29846",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2896.8919124041995,
+            "y": 825.66283098746942
+          },
+          "nodeIndex": "F_BilateralTradeFlow",
+          "nodeLineageTag": "67c0bb3f-6846-46cf-8778-23e75279a04c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2391.0664449802221,
+            "y": 742.79261640974983
+          },
+          "nodeIndex": "F_IndustryExposure",
+          "nodeLineageTag": "82416328-8256-4fed-8067-f38b1f3fb630",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3023.3418606119135,
+            "y": 380.54152608638606
+          },
+          "nodeIndex": "F_DisruptionEvent",
+          "nodeLineageTag": "84183327-63b8-4cba-80e0-924ecc2d8352",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 44.905697313104191,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

@@ -1,0 +1,179 @@
+expression shipping_rates = ```
+		let
+		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\shipping_rates.csv"),[Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type with Locale" 
+		    = Table.TransformColumnTypes(#"Promoted Headers", 
+		        {
+		            {"baltic_dry_index", type number},
+		            {"container_rate_usd_40ft", type number},
+		            {"air_cargo_rate_usd_kg", type number},
+		            {"bdi_mom_change_pct", type number},
+		            {"container_yoy_pct", type number},
+		            {"tanker_rate_aframax_usd_day", type number},
+		            {"bulk_carrier_handysize_usd_day", type number},
+		            {"supply_chain_pressure_index", type number},
+		            {"on_time_delivery_pct", type number}
+		        }, "en-US"
+		    ),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Changed Type with Locale",{{"year", Int64.Type}, {"month", Int64.Type}, {"date", type date}})
+		in
+		    #"Changed Type"
+		```
+	lineageTag: 57138cb1-225c-46d0-8933-8c4eb37ccaf9
+	queryGroup: Data
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression trade_flows = ```
+		let
+		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\trade_flows.csv"),[Delimiter=",", Columns=11, Encoding=1258, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", 
+		        {
+		            {"trade_value_bn_usd", type number},
+		            {"yoy_growth_pct", type number},
+		            {"effective_tariff_rate_pct", type number},
+		            {"trade_active", type number},
+		            {"supply_chain_integrated", type number},
+		            {"concentration_risk", type number}
+		        }, "en-US"
+		    ),
+		    #"Changed Type 1" = Table.TransformColumnTypes(#"Changed Type",{{"year", Int64.Type}})
+		in
+		    #"Changed Type 1"
+		```
+	lineageTag: 341c441d-29db-4e2b-bedc-d1cf961f5283
+	queryGroup: Data
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression tariff_timeline =
+		let
+		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\tariff_timeline.csv"),[Delimiter=",", Columns=17, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"tariff_id", type text}, {"date", type date}, {"year", Int64.Type}, {"month", Int64.Type}, {"imposing_country", type text}, {"target_country", type text}, {"policy_name", type text}, {"tariff_rate_pct", Int64.Type}, {"estimated_value_usd_bn", Int64.Type}, {"description", type text}, {"is_trump_1_0", Int64.Type}, {"is_biden", Int64.Type}, {"is_trump_2_0", Int64.Type}, {"is_retaliation", Int64.Type}, {"is_section_232", Int64.Type}, {"is_section_301", Int64.Type}, {"is_ieepa", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 1f5a7319-2fc3-469d-adb0-924a3c61c782
+	queryGroup: Data\Unused
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression port_congestion =
+		let
+		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\port_congestion.csv"),[Delimiter=",", Columns=11, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"week_start", type date}, {"year", Int64.Type}, {"port", type text}, {"country", type text}, {"region", type text}, {"throughput_teu_mn", Int64.Type}, {"vessels_at_anchor", Int64.Type}, {"avg_wait_days", Int64.Type}, {"congestion_index", Int64.Type}, {"port_utilization_pct", Int64.Type}, {"berth_delay_hrs", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: b3bb2924-9708-4cc7-95b6-305ff020f02f
+	queryGroup: Data\Unused
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression industry_exposure = ```
+		let
+		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\industry_exposure.csv"),[Delimiter=",", Columns=15, Encoding=1258, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type with Locale" = Table.TransformColumnTypes(#"Promoted Headers", 
+		        {
+		            {"pandemic_exposure", type number},
+		            {"geopolitical_exposure", type number},
+		            {"natural_disaster_exposure", type number},
+		            {"tariff_exposure", type number},
+		            {"logistics_exposure", type number},
+		            {"energy_exposure", type number},
+		            {"labor_exposure", type number},
+		            {"cyber_exposure", type number},
+		            {"overall_vulnerability", type number},
+		            {"inventory_days", type number},
+		            {"supplier_concentration_hhi", type number},
+		            {"just_in_time_dependency", type number},
+		            {"nearshoring_score_2024", type number}
+		        }, "en-US"
+		    ),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Changed Type with Locale",{{"year", type number}})
+		in
+		    #"Changed Type"
+		```
+	lineageTag: 305ec40c-ab47-4337-90a6-a56da2d80847
+	queryGroup: Data
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression disruption_events =
+		let
+		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\disruption_events.csv"),[Delimiter=",", Columns=18, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"date", type date}, {"year", type number}, {"duration_days", Int64.Type}, {"bdi_shock_pct", Int64.Type}, {"freight_rate_shock_pct", type number}, {"recovery_months", type number}}),
+		    #"Changed Type with Locale" = Table.TransformColumnTypes(#"Changed Type", {{"gdp_impact_pct", type number}, {"trade_volume_impact_pct", type number}}, "en-US"),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type with Locale",{{"is_pandemic", Int64.Type}, {"is_geopolitical", Int64.Type}, {"is_natural", Int64.Type}, {"is_financial", Int64.Type}, {"straits_affected", Int64.Type}, {"port_closure", Int64.Type}}),
+		    #"Changed Type2" = Table.TransformColumnTypes(#"Changed Type1",{{"is_pandemic", type logical}, {"is_geopolitical", type logical}, {"is_natural", type logical}, {"is_financial", type logical}, {"straits_affected", type logical}, {"port_closure", type logical}})
+		in
+		    #"Changed Type2"
+	lineageTag: 1c568c55-2f5b-4a19-81b4-25ef0b0a4bfd
+	queryGroup: Data
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression commodity_prices_supply_chain =
+		let
+		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\commodity_prices_supply_chain.csv"),[Delimiter=",", Columns=8, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"date", type date}, {"year", Int64.Type}, {"month", Int64.Type}, {"commodity", type text}, {"category", type text}, {"unit", type text}, {"currency", type text}, {"price", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 4d06ea8e-7764-4df7-896c-437acae8f1db
+	queryGroup: Data\Unused
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'trade_flows (2)' =
+		let
+		    Source = trade_flows,
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"importer"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"importer", "trading_entity"}})
+		in
+		    #"Renamed Columns"
+	lineageTag: a05ec0c5-2da5-4821-805e-56570a0777fd
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression F_DisruptionEvent_temp =
+		let
+		    Source = Table.AddColumn(disruption_events, "k_date", each Date.Year([date]) * 10000
+		    + Date.Month([date]) * 100
+		    + Date.Day([date])),
+		    #"Removed Columns" = Table.RemoveColumns(Source,{"date", "year"}),
+		    #"Merged Queries" = Table.NestedJoin(#"Removed Columns", {"severity"}, D_Severity, {"severity"}, "D_Severity", JoinKind.LeftOuter),
+		    #"Expanded D_Severity" = Table.ExpandTableColumn(#"Merged Queries", "D_Severity", {"k_severity"}, {"D_Severity.k_severity"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Expanded D_Severity",{{"D_Severity.k_severity", "k_severity"}}),
+		    #"Removed Columns1" = Table.RemoveColumns(#"Renamed Columns",{"severity"}),
+		    #"Merged Queries1" = Table.NestedJoin(#"Removed Columns1", {"disruption_type"}, D_DisruptionType, {"disruption_type"}, "D_DisruptionType", JoinKind.LeftOuter),
+		    #"Expanded D_DisruptionType" = Table.ExpandTableColumn(#"Merged Queries1", "D_DisruptionType", {"k_disruption_type"}, {"k_disruption_type"}),
+		    #"Removed Columns2" = Table.RemoveColumns(#"Expanded D_DisruptionType",{"disruption_type"})
+		in
+		    #"Removed Columns2"
+	lineageTag: cf537756-999c-412e-a06a-0692a8cb5130
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

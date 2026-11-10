@@ -1,0 +1,174 @@
+table F_IndustryExposure
+	lineageTag: 82416328-8256-4fed-8067-f38b1f3fb630
+
+	column pandemic_exposure
+		dataType: double
+		lineageTag: 0caba3a5-4384-4fd2-9240-ee5eb9076c17
+		summarizeBy: sum
+		sourceColumn: pandemic_exposure
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column geopolitical_exposure
+		dataType: double
+		lineageTag: f1638a8a-0700-4346-ac93-c1f67f118b4f
+		summarizeBy: sum
+		sourceColumn: geopolitical_exposure
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column natural_disaster_exposure
+		dataType: double
+		lineageTag: f6139292-f8d5-4eea-a664-37c518fb6fb7
+		summarizeBy: sum
+		sourceColumn: natural_disaster_exposure
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tariff_exposure
+		dataType: double
+		lineageTag: ec7366a3-f37d-48e3-9e04-41a65d750d31
+		summarizeBy: sum
+		sourceColumn: tariff_exposure
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column logistics_exposure
+		dataType: double
+		lineageTag: 605123aa-ec8e-4d6b-89c3-bb3a6405dd27
+		summarizeBy: sum
+		sourceColumn: logistics_exposure
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column energy_exposure
+		dataType: double
+		lineageTag: dc31e38b-6f5b-4641-87ae-f1d0fd8a7b32
+		summarizeBy: sum
+		sourceColumn: energy_exposure
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column labor_exposure
+		dataType: double
+		lineageTag: 1a3d0062-8b55-4114-b7f7-3cf8eab3fe66
+		summarizeBy: sum
+		sourceColumn: labor_exposure
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cyber_exposure
+		dataType: double
+		lineageTag: 7186bc82-2966-4145-8810-6322eba13161
+		summarizeBy: sum
+		sourceColumn: cyber_exposure
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column overall_vulnerability
+		dataType: double
+		lineageTag: 4f22a70b-c4f7-404d-97ff-7b4347e2873f
+		summarizeBy: sum
+		sourceColumn: overall_vulnerability
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column inventory_days
+		dataType: double
+		lineageTag: fd6a6962-29f2-4d5e-9521-aaf9b6d28ea8
+		summarizeBy: sum
+		sourceColumn: inventory_days
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column supplier_concentration_hhi
+		dataType: double
+		lineageTag: 78bd1d8b-9962-45d0-bfcb-f97e106313ac
+		summarizeBy: sum
+		sourceColumn: supplier_concentration_hhi
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column just_in_time_dependency
+		dataType: double
+		lineageTag: 2fb58ad6-05aa-4fb1-b672-c86eb05728af
+		summarizeBy: sum
+		sourceColumn: just_in_time_dependency
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nearshoring_score_2024
+		dataType: double
+		lineageTag: 68d4920d-af84-43ea-aa68-cd357fa01edd
+		summarizeBy: sum
+		sourceColumn: nearshoring_score_2024
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column k_industry
+		dataType: int64
+		formatString: 0
+		lineageTag: 0d029006-abf8-4453-bffc-8f029e4e83b4
+		summarizeBy: none
+		sourceColumn: k_industry
+
+		annotation SummarizationSetBy = Automatic
+
+	column k_date
+		dataType: int64
+		formatString: 0
+		lineageTag: bff904ca-0232-43c5-afd4-8c5d5ef60275
+		summarizeBy: none
+		sourceColumn: k_date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition F_IndustryExposure = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Source = industry_exposure,
+				    #"Merged Queries" = Table.NestedJoin(Source, {"industry"}, D_Industry, {"industry"}, "D_Industry", JoinKind.LeftOuter),
+				    #"Expanded D_Industry" = Table.ExpandTableColumn(#"Merged Queries", "D_Industry", {"k_industry"}, {"D_Industry.k_industry"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Expanded D_Industry",{{"D_Industry.k_industry", "k_industry"}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Renamed Columns",{"industry"}),
+				    #"Inserted Multiplication" = Table.AddColumn(#"Removed Columns", "Multiplication", each [year] * 10000, type number),
+				    #"Inserted Addition" = Table.AddColumn(#"Inserted Multiplication", "Addition", each [Multiplication] + 101, type number),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Inserted Addition",{"Multiplication"}),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Removed Columns1",{{"Addition", "k_date"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns1",{{"k_date", Int64.Type}}),
+				    #"Removed Columns2" = Table.RemoveColumns(#"Changed Type",{"year"})
+				in
+				    #"Removed Columns2"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

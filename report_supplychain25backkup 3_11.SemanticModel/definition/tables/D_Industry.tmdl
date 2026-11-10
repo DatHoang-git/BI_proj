@@ -1,0 +1,40 @@
+table D_Industry
+	lineageTag: 704aa2d5-b445-4ece-af33-cbd652b62c38
+
+	column k_industry
+		dataType: int64
+		formatString: 0
+		lineageTag: 5699b177-1cd3-42b1-93ce-4dce29572d25
+		summarizeBy: none
+		sourceColumn: k_industry
+
+		annotation SummarizationSetBy = Automatic
+
+	column industry
+		dataType: string
+		lineageTag: d687daf0-3a87-46c2-936d-fa37a1e2909c
+		summarizeBy: none
+		sourceColumn: industry
+
+		annotation SummarizationSetBy = Automatic
+
+	partition D_Industry = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = industry_exposure,
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"year", Int64.Type}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each [industry] <> null and [industry] <> ""),
+				    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows", {"industry"}),
+				    #"Added Index" = Table.AddIndexColumn(#"Removed Duplicates", "Index", 1, 1, Int64.Type),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Index",{{"Index", "k_industry"}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Renamed Columns",{"year", "pandemic_exposure", "geopolitical_exposure", "natural_disaster_exposure", "tariff_exposure", "logistics_exposure", "energy_exposure", "labor_exposure", "cyber_exposure", "overall_vulnerability", "inventory_days", "supplier_concentration_hhi", "just_in_time_dependency", "nearshoring_score_2024"}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Removed Columns",{"k_industry", "industry"})
+				in
+				    #"Reordered Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,55 @@
+relationship e7b293dd-149a-46ad-b47d-6dda8b101e20
+	joinOnDateBehavior: datePartOnly
+	fromColumn: D_Date.full_date
+	toColumn: LocalDateTable_fcc5b705-2422-4dad-9f5e-871648df7459.Date
+
+relationship 6d4a9bc7-10e5-df4a-1f77-3909173c86eb
+	fromColumn: F_BilateralTradeFlow.k_date
+	toColumn: D_Date.k_date
+
+relationship e0d25b2f-6849-b00b-7a83-7369a65d448d
+	fromColumn: F_BilateralTradeFlow.k_exporter
+	toColumn: D_TradingEntity.k_trading_entity
+
+relationship b47b99a4-7d5c-42df-115f-d6b3c44aa64f
+	isActive: false
+	fromColumn: F_BilateralTradeFlow.k_importer
+	toColumn: D_TradingEntity.k_trading_entity
+
+relationship ff47cc85-7594-9257-ef67-9bcf84da0248
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: F_DisruptionEvent.k_date
+	toColumn: D_Date.k_date
+
+relationship a30de082-1b3e-2e8a-3fd2-e5c697cc14cc
+	fromColumn: F_DisruptionEvent.k_disruption_type
+	toColumn: D_DisruptionType.k_disruption_type
+
+relationship 174142af-7423-6f49-37a0-eff7c953e7b6
+	fromColumn: F_DisruptionEvent.k_region
+	toColumn: D_Region.k_region
+
+relationship c89f3d97-1b64-7374-c3ad-b76fb1f62122
+	fromColumn: F_DisruptionEvent.k_severity
+	toColumn: D_Severity.k_severity
+
+relationship 31049e9f-b9a8-19fc-e9e5-f25611026428
+	fromColumn: F_IndustryExposure.k_date
+	toColumn: D_Date.k_date
+
+relationship b25b6592-be88-da14-80f3-5ea267fcfd49
+	fromColumn: F_IndustryExposure.k_industry
+	toColumn: D_Industry.k_industry
+
+relationship aa5f86d4-5ba8-2a63-c6dc-e7a11f036625
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: F_MonthlySupplyChainCondition.k_date
+	toColumn: D_Date.k_date
+
+relationship a07e02f0-9592-ab68-44ab-132c3d973ea9
+	isActive: false
+	fromColumn: D_TradingEntity.'D_Region.k_region'
+	toColumn: D_Region.k_region
+

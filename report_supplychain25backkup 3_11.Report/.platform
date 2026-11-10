@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "report_supplychain25backkup 3_11"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "28092516-907b-4fea-87a9-797a983ad20e"
+  }
+}
