@@ -1,6 +1,83 @@
 table F_BilateralTradeFlow
 	lineageTag: 67c0bb3f-6846-46cf-8778-23e75279a04c
 
+	measure importer_market_share_pct =
+			
+			DIVIDE(
+			    [Total_Trade_Value_Bn],
+			    CALCULATE(
+			        [Total_Trade_Value_Bn],
+			        ALL(F_BilateralTradeFlow[exporter], F_BilateralTradeFlow[corridor])
+			    ),
+			    0
+			)
+		lineageTag: 09d7fe30-b714-4e93-8605-2e11a1b60e1f
+
+	measure total_trade_value_bn = SUM(F_BilateralTradeFlow[trade_value_bn_usd])
+		lineageTag: 7aeeb8b6-9f2b-432a-8591-9d920777dec1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure period_trade_growth_pct =
+			
+			VAR FirstYear =
+			    MINX(
+			        FILTER(VALUES('D_Date'[Year]), NOT ISBLANK([total_trade_value_bn])),
+			        'D_Date'[Year]
+			    )
+			VAR LastYear =
+			    MAXX(
+			        FILTER(VALUES('D_Date'[Year]), NOT ISBLANK([total_trade_value_bn])),
+			        'D_Date'[Year]
+			    )
+			VAR FirstTrade =
+			    CALCULATE([total_trade_value_bn], FILTER(ALL('D_Date'), 'D_Date'[Year] = FirstYear))
+			VAR LastTrade =
+			    CALCULATE([total_trade_value_bn], FILTER(ALL('D_Date'), 'D_Date'[Year] = LastYear))
+			RETURN
+			    IF(FirstYear = LastYear, BLANK(), DIVIDE(LastTrade - FirstTrade, FirstTrade, BLANK()))
+		lineageTag: be4ce783-90dd-4bb1-84f5-3b7ab20659ac
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure total_tariff_cost_bn = SUM(F_BilateralTradeFlow[tariff_cost_bn])
+		lineageTag: 4d8d70f9-d439-49f2-b3af-5acecb0fee32
+
+	measure weighted_tariff_rate_pct = ```
+			
+			DIVIDE(
+			    SUM('F_BilateralTradeFlow'[tariff_cost_bn]),
+			    SUM('F_BilateralTradeFlow'[trade_value_bn_usd])
+			) 
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: de645299-3081-43fd-97bd-b3f1b8b13eed
+
+	measure yoy_trade_growth_pct =
+			
+			VAR LatestYear =
+			    MAXX(
+			        FILTER(
+			            VALUES('D_Date'[Year]),
+			            NOT ISBLANK([total_trade_value_bn])
+			        ),
+			        'D_Date'[Year]
+			    )
+			VAR CurrentYearTrade =
+			    CALCULATE(
+			        [total_trade_value_bn],
+			        FILTER(ALL('D_Date'), 'D_Date'[Year] = LatestYear)
+			    )
+			VAR PrevYearTrade =
+			    CALCULATE(
+			        [total_trade_value_bn],
+			        FILTER(ALL('D_Date'), 'D_Date'[Year] = LatestYear - 1)
+			    )
+			RETURN
+			    DIVIDE(CurrentYearTrade - PrevYearTrade, PrevYearTrade, BLANK())
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 4b0ec32c-fde5-4d5b-a3d8-3cbd8fe41877
+
 	column trade_category
 		dataType: string
 		lineageTag: 5e23a3f3-95be-4b8b-8ded-5c53db15b672
@@ -104,6 +181,58 @@ table F_BilateralTradeFlow
 		sourceColumn: k_importer
 
 		annotation SummarizationSetBy = Automatic
+
+	column corridor = 'F_BilateralTradeFlow'[exporter] & " -> " & 'F_BilateralTradeFlow'[importer]
+		lineageTag: 9acda4e1-e194-4820-b5eb-e608c0b9eda4
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column exporter =
+			
+			LOOKUPVALUE(
+			    'D_TradingEntity'[trading_entity],
+			    'D_TradingEntity'[k_trading_entity],
+			    'F_BilateralTradeFlow'[k_exporter]
+			)
+		lineageTag: 4a9a55da-3fb8-4a7b-92dc-205623b1bcc7
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column importer =
+			
+			LOOKUPVALUE(
+			    'D_TradingEntity'[trading_entity],
+			    'D_TradingEntity'[k_trading_entity],
+			    'F_BilateralTradeFlow'[k_importer]
+			)
+		lineageTag: 7686df77-e71e-4f22-8b19-0eafc5ba1a4d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column tariff_tier =
+			
+			IF(
+			    'F_BilateralTradeFlow'[effective_tariff_rate_pct] > 2.5,
+			    "Chịu sốc thuế quan (>2.5%)",
+			    "Thuế nền ổn định (≤2.5%)"
+			)
+		lineageTag: 01c7d458-ace6-4273-946c-5342253d5f6f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column tariff_cost_bn =
+			
+			'F_BilateralTradeFlow'[trade_value_bn_usd] * ('F_BilateralTradeFlow'[effective_tariff_rate_pct] / 100)
+		lineageTag: bad6f1f2-d0e1-4ead-87e9-ee5f5ff978da
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition F_BilateralTradeFlow = m
 		mode: import

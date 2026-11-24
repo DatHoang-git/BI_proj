@@ -18,6 +18,21 @@ table D_Industry
 
 		annotation SummarizationSetBy = Automatic
 
+	column type_of_resilience =
+			
+			VAR score = CALCULATE(AVERAGE(F_IndustryExposure[Resilience_Score]))
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    score >= 55, "Tốt",
+			    score >= 45, "Trung bình",
+			    "Kém"
+			)
+		lineageTag: baf9d73d-e2f6-4313-b6a4-9f4b6845e6da
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition D_Industry = m
 		mode: import
 		queryGroup: Dimensions
@@ -36,5 +51,5 @@ table D_Industry
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Table
+	annotation PBI_ResultType = Exception
 
