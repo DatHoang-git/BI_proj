@@ -6638,7 +6638,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "Tổng kim ngạch (Tỷ $)": {
+			          "Kim ngạch (tỷ $)": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -6648,7 +6648,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "Kim ngạch (tỷ $)": {
+			          "Tổng kim ngạch (Tỷ $)": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -6757,7 +6757,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "Thuế suất hiệu dụng TB (%)": {
+			          "Thuế suất hiệu dụng": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -6767,7 +6767,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "Thuế suất hiệu dụng": {
+			          "Thuế suất hiệu dụng TB (%)": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
