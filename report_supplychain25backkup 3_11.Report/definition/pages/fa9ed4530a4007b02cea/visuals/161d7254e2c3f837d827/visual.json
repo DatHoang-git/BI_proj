@@ -1,0 +1,475 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "161d7254e2c3f837d827",
+  "position": {
+    "x": 880.54540277056572,
+    "y": 513.9603678453575,
+    "z": 5,
+    "height": 566.0396321546425,
+    "width": 1039.4545972294343,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "D_Industry"
+                    }
+                  },
+                  "Property": "industry"
+                }
+              },
+              "queryRef": "D_Industry.industry",
+              "nativeQueryRef": "industry",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "F_IndustryExposure"
+                        }
+                      },
+                      "Property": "Pts_Vulnerability"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(F_IndustryExposure.Pts_Vulnerability)",
+              "nativeQueryRef": "Ít tổn thương",
+              "displayName": "Ít tổn thương"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "F_IndustryExposure"
+                        }
+                      },
+                      "Property": "Pts_Inventory"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(F_IndustryExposure.Pts_Inventory)",
+              "nativeQueryRef": "Dự trữ hàng hóa",
+              "displayName": "Dự trữ hàng hóa"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "F_IndustryExposure"
+                        }
+                      },
+                      "Property": "Pts_Supplier_HHI"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(F_IndustryExposure.Pts_Supplier_HHI)",
+              "nativeQueryRef": "Đa dạng nguồn cung",
+              "displayName": "Đa dạng nguồn cung"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "F_IndustryExposure"
+                        }
+                      },
+                      "Property": "Pts_Low_JIT"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(F_IndustryExposure.Pts_Low_JIT)",
+              "nativeQueryRef": "Ít phụ thuộc JIT",
+              "displayName": "Ít phụ thuộc JIT"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "F_IndustryExposure"
+                        }
+                      },
+                      "Property": "Pts_Nearshoring"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(F_IndustryExposure.Pts_Nearshoring)",
+              "nativeQueryRef": "Dịch chuyển nguồn cung",
+              "displayName": "Dịch chuyển nguồn cung"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "F_IndustryExposure"
+                      }
+                    },
+                    "Property": "Pts_Vulnerability"
+                  }
+                },
+                "Function": 1
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "totals": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dataPoint": [
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1E3A8A'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Avg(F_IndustryExposure.Pts_Vulnerability)"
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#2563EB'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Avg(F_IndustryExposure.Pts_Inventory)"
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#0D9488'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Avg(F_IndustryExposure.Pts_Supplier_HHI)"
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#64748B'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Avg(F_IndustryExposure.Pts_Low_JIT)"
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F59E0B'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Avg(F_IndustryExposure.Pts_Nearshoring)"
+          }
+        }
+      ],
+      "legend": [
+        {
+          "properties": {
+            "showGradientLegend": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Cấu trúc điểm chống chịu theo 5 tiêu chí'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'''Segoe UI Semibold'', wf_segoe-ui_semibold, helvetica, arial, sans-serif'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "18D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "57364bb9a377a88da707",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "D_Industry"
+              }
+            },
+            "Property": "industry"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b8c84625d57c322a173a",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "F_IndustryExposure"
+                  }
+                },
+                "Property": "Pts_Vulnerability"
+              }
+            },
+            "Function": 1
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "3d53a92bcae28c397a4a",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "F_IndustryExposure"
+                  }
+                },
+                "Property": "Pts_Inventory"
+              }
+            },
+            "Function": 1
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "cedf52a938bef932ee30",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "F_IndustryExposure"
+                  }
+                },
+                "Property": "Pts_Supplier_HHI"
+              }
+            },
+            "Function": 1
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "37c218c9f4bcace75c39",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "F_IndustryExposure"
+                  }
+                },
+                "Property": "Pts_Low_JIT"
+              }
+            },
+            "Function": 1
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "8a7bfb8f5a7eedd32054",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "F_IndustryExposure"
+                  }
+                },
+                "Property": "Pts_Nearshoring"
+              }
+            },
+            "Function": 1
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

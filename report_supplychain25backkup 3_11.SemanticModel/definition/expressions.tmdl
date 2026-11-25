@@ -1,6 +1,6 @@
 expression shipping_rates = ```
 		let
-		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\shipping_rates.csv"),[Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents("E:\Desktop\Trí tuệ kinh doanh\Project\Data\shipping_rates.csv"),[Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type with Locale" 
 		    = Table.TransformColumnTypes(#"Promoted Headers", 
@@ -25,11 +25,11 @@ expression shipping_rates = ```
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Table
+	annotation PBI_ResultType = Exception
 
 expression trade_flows = ```
 		let
-		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\trade_flows.csv"),[Delimiter=",", Columns=11, Encoding=1258, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents("E:\Desktop\Trí tuệ kinh doanh\Project\Data\trade_flows.csv"),[Delimiter=",", Columns=11, Encoding=1258, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", 
 		        {
@@ -54,7 +54,7 @@ expression trade_flows = ```
 
 expression tariff_timeline =
 		let
-		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\tariff_timeline.csv"),[Delimiter=",", Columns=17, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents("E:\Desktop\Trí tuệ kinh doanh\Project\Data\tariff_timeline.csv"),[Delimiter=",", Columns=17, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"tariff_id", type text}, {"date", type date}, {"year", Int64.Type}, {"month", Int64.Type}, {"imposing_country", type text}, {"target_country", type text}, {"policy_name", type text}, {"tariff_rate_pct", Int64.Type}, {"estimated_value_usd_bn", Int64.Type}, {"description", type text}, {"is_trump_1_0", Int64.Type}, {"is_biden", Int64.Type}, {"is_trump_2_0", Int64.Type}, {"is_retaliation", Int64.Type}, {"is_section_232", Int64.Type}, {"is_section_301", Int64.Type}, {"is_ieepa", Int64.Type}})
 		in
@@ -68,7 +68,7 @@ expression tariff_timeline =
 
 expression port_congestion =
 		let
-		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\port_congestion.csv"),[Delimiter=",", Columns=11, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents("E:\Desktop\Trí tuệ kinh doanh\Project\Data\port_congestion.csv"),[Delimiter=",", Columns=11, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"week_start", type date}, {"year", Int64.Type}, {"port", type text}, {"country", type text}, {"region", type text}, {"throughput_teu_mn", Int64.Type}, {"vessels_at_anchor", Int64.Type}, {"avg_wait_days", Int64.Type}, {"congestion_index", Int64.Type}, {"port_utilization_pct", Int64.Type}, {"berth_delay_hrs", Int64.Type}})
 		in
@@ -82,7 +82,7 @@ expression port_congestion =
 
 expression industry_exposure = ```
 		let
-		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\industry_exposure.csv"),[Delimiter=",", Columns=15, Encoding=1258, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents("E:\Desktop\Trí tuệ kinh doanh\Project\Data\industry_exposure.csv"),[Delimiter=",", Columns=15, Encoding=1258, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type with Locale" = Table.TransformColumnTypes(#"Promoted Headers", 
 		        {
@@ -110,11 +110,11 @@ expression industry_exposure = ```
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Table
+	annotation PBI_ResultType = Exception
 
 expression disruption_events =
 		let
-		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\disruption_events.csv"),[Delimiter=",", Columns=18, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents("E:\Desktop\Trí tuệ kinh doanh\Project\Data\disruption_events.csv"),[Delimiter=",", Columns=18, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"date", type date}, {"year", type number}, {"duration_days", Int64.Type}, {"bdi_shock_pct", Int64.Type}, {"freight_rate_shock_pct", type number}, {"recovery_months", type number}}),
 		    #"Changed Type with Locale" = Table.TransformColumnTypes(#"Changed Type", {{"gdp_impact_pct", type number}, {"trade_volume_impact_pct", type number}}, "en-US"),
@@ -131,7 +131,7 @@ expression disruption_events =
 
 expression commodity_prices_supply_chain =
 		let
-		    Source = Csv.Document(File.Contents("D:\keepskyclear.Obsidian\3_Assets\BI\proj\global-supply-chain-and-trade-disruption-25\commodity_prices_supply_chain.csv"),[Delimiter=",", Columns=8, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    Source = Csv.Document(File.Contents("E:\Desktop\Trí tuệ kinh doanh\Project\Data\commodity_prices_supply_chain.csv"),[Delimiter=",", Columns=8, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"date", type date}, {"year", Int64.Type}, {"month", Int64.Type}, {"commodity", type text}, {"category", type text}, {"unit", type text}, {"currency", type text}, {"price", Int64.Type}})
 		in

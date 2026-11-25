@@ -149,6 +149,55 @@ table F_IndustryExposure
 
 		annotation SummarizationSetBy = Automatic
 
+	column Pts_Inventory = 20 * (('F_IndustryExposure'[inventory_days] - 5) / 182)
+		formatString: 0.00
+		lineageTag: 2187179b-6045-44f8-a704-def544cfe2db
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Low_JIT = 15 * (1 - 'F_IndustryExposure'[just_in_time_dependency])
+		formatString: 0.00
+		lineageTag: db0c3839-b034-45fe-b89c-5623d5a9ea09
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Nearshoring = 15 * 'F_IndustryExposure'[nearshoring_score_2024]
+		formatString: 0.00
+		lineageTag: 66d6658b-10b2-4ce6-a338-dfbae260c830
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Supplier_HHI = 20 * (1 - 'F_IndustryExposure'[supplier_concentration_hhi])
+		formatString: 0.00
+		lineageTag: 2346f479-64da-4cc8-b4b0-77d07be0c458
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pts_Vulnerability = 30 * ((10 - 'F_IndustryExposure'[overall_vulnerability]) / 10)
+		formatString: 0.00
+		lineageTag: 415adf64-34d3-4aee-8c9f-bf29903e531e
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Resilience_Score = ```
+			
+			'F_IndustryExposure'[Pts_Vulnerability] + 
+			'F_IndustryExposure'[Pts_Inventory] + 
+			'F_IndustryExposure'[Pts_Supplier_HHI] + 
+			'F_IndustryExposure'[Pts_Low_JIT] + 
+			'F_IndustryExposure'[Pts_Nearshoring]
+			```
+		formatString: 0.00
+		lineageTag: 073246e9-c525-463e-a3f2-cf089a4d97f3
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
 	partition F_IndustryExposure = m
 		mode: import
 		queryGroup: Fact
